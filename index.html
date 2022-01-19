@@ -35,6 +35,8 @@
           results.image, 0, 0, canvasElement.width, canvasElement.height);
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
+          // 좌표 데이터 수집, 예상: 좌표 데이터를 실시간으로 서버로 전송
+          // console.log(landmarks)
           drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS,
                          {color: '#00FF00', lineWidth: 5});
           drawLandmarks(canvasCtx, landmarks, {color: '#FF0000', lineWidth: 2});
