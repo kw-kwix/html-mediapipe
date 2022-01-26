@@ -1,6 +1,6 @@
 import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
 
-const host = "192.168.35.61:3000"
+const host = "localhost:5000"
 
 export const socket = io(host);
 
@@ -15,9 +15,13 @@ socket.on("disconnect", () => {
     console.log(socket.connected); // false 
 });
 
-// socket.
-
 socket.on("hello", (arg) => {
     console.log(arg); // world
     console.log("pong");
+});
+
+socket.on("result", (arg) => {
+    console.log(arg);
+    let pose = document.querySelector("div#pose_name")
+    pose.textContent = arg.action
 });
