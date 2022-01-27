@@ -1,4 +1,4 @@
-import { Pose, POSE_CONNECTIONS } from "@mediapipe/pose";
+import { Pose, POSE_CONNECTIONS, VERSION } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
 import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
 
@@ -54,8 +54,7 @@ export const mediapipe = () => {
 
     const pose = new Pose({
         locateFile: (file) => {
-            console.log(file)
-            return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${VERSION}/${file}`;
             // return `@mediapipe/pose/${file}`;
         }
     });
