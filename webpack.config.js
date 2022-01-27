@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     mode: 'production', // 아래 3개는 기본 설정
@@ -23,5 +24,13 @@ module.exports = {
             }
         ]
     },
-    plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
+    plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" }),
+    new CopyWebpackPlugin({
+        patterns: [
+            {
+                from: 'node_modules/@mediapipe/pose',
+                to: 'pose'
+            }
+        ]
+    })],
 };
