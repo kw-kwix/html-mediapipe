@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    mode: 'production', // 아래 3개는 기본 설정
+    mode: 'none', // 아래 3개는 기본 설정
     entry: './src/index.js',
     output: {
         filename: 'main.js',
@@ -24,4 +24,5 @@ module.exports = {
         ]
     },
     plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
+    // stats: { warnings: false }
 };
