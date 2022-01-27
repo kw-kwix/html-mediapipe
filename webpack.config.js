@@ -3,12 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: 'none', // 아래 3개는 기본 설정
-    entry: './src/index.js',
+    entry: { index: './src/index.js', mediapipe: './src/mediapipe.js' },
     output: {
-        filename: 'main.js',
+        filename: '[name].bundle.js',
+        // filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
+        clean: true
     },
-    devtool: 'inline-source-map', // developement setting
+    devtool: 'inline-source-map', // development setting
     devServer: {
         static: './dist',
     },
@@ -23,6 +25,10 @@ module.exports = {
             }
         ]
     },
-    plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
-    // stats: { warnings: false }
+    plugins: [
+        new HtmlWebpackPlugin({ template: "./src/index.html" }),
+    ],
+    optimization: {
+        splitChunks: { chunks: 'all' },
+    },
 };
