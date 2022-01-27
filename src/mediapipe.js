@@ -3,19 +3,26 @@ import { Camera } from "@mediapipe/camera_utils";
 import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
 
 export const mediapipe = () => {
+    let currentWidth = window.innerWidth;
+
     const videoElement = document.getElementsByClassName('input_video')[0];
-    const canvasElement  = document.querySelector("canvas")
+    const canvasElement = document.querySelector("canvas")
     const canvasCtx = canvasElement.getContext('2d');
 
     const updateMediaSize = async () => {
-        let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    
-        let { width, height } = stream.getTracks()[0].getSettings();
-    
-        console.log(`${width}x${height}`);
-    
-        canvasElement.width = width
-        canvasElement.height = height
+        if (currentWidth !== window.innerWidth) {
+
+            let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+            let { width, height } = stream.getTracks()[0].getSettings();
+
+            console.log(`${width}x${height}`);
+
+            canvasElement.width = width
+            canvasElement.height = height
+            currentWidth = window.innerWidth;
+
+        }
     }
 
     // 모바일 디바이스 방향 전환시 적용
