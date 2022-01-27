@@ -5,8 +5,8 @@
   "author": "yoonlight <yoonlight12@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "webpack",
-    "serve": "webpack serve --open"
+    "build": "webpack --mode=production",
+    "serve": "webpack serve --open --mode=development"
   },
   "devDependencies": {
     "@popperjs/core": "^2.11.2",
