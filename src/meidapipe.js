@@ -18,8 +18,6 @@ export const mediapipe = () => {
         canvasElement.height = height
     }
 
-    window.onload = updateMediaSize
-
     // 모바일 디바이스 방향 전환시 적용
     window.onresize = updateMediaSize
 
@@ -56,8 +54,9 @@ export const mediapipe = () => {
 
     const pose = new Pose({
         locateFile: (file) => {
-            // return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-            return `./pose/${file}`;
+            console.log(file)
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+            // return `@mediapipe/pose/${file}`;
         }
     });
     pose.setOptions({
