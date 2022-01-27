@@ -17,12 +17,8 @@ jobs:
         with:
           name: web-static-file
           path: dist
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
-        with:
-          name: code-coverage-report
-          path: output/test/code-coverage.html
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download math result for job 1
