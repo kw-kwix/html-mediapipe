@@ -4,7 +4,7 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 module.exports = {
-    mode: 'none', // 아래 3개는 기본 설정
+    mode: 'production', // 아래 3개는 기본 설정
     entry: { index: './src/index.js', mediapipe: './src/mediapipe.js', ws: './src/ws.js' },
     output: {
         filename: '[name].bundle.js',
