@@ -4,8 +4,6 @@ import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
 import { socket } from "./ws.js"
 
 export const mediapipe = async () => {
-    let currentWidth = window.innerWidth;
-
     const videoElement = document.getElementsByClassName('input_video')[0];
     const canvasElement = document.querySelector("canvas")
     let canvasCtx = canvasElement.getContext('2d');
@@ -23,27 +21,6 @@ export const mediapipe = async () => {
         }
         canvasElement.width = width;
         canvasElement.height = height;
-    }
-
-    const updateStartMediaSize = async () => {
-        let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-        let { width, height } = stream.getTracks()[0].getSettings();
-
-        console.log(`${width}x${height}`);
-
-        canvasElement.width = width
-        canvasElement.height = height
-        canvasCtx = canvasElement.getContext('2d');
-    }
-
-    const updateMediaSize = async () => {
-        console.log(currentWidth);
-        console.log(window.innerWidth);
-        if (currentWidth !== window.innerWidth) {
-            await updateStartMediaSize()
-            currentWidth = window.innerWidth;
-        }
     }
 
     // 모바일 디바이스 방향 전환시 적용
