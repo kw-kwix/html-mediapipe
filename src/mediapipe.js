@@ -78,7 +78,6 @@ export const mediapipe = async () => {
 
     const camera = new Camera(videoElement, {
         onFrame: async () => {
-            await updateStartMediaSize()
             await pose.send({ image: videoElement });
         },
     });
