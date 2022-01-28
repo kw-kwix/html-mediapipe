@@ -23,6 +23,8 @@ export const mediapipe = async () => {
     }
 
     const updateMediaSize = async () => {
+        console.log(currentWidth);
+        console.log(window.innerWidth);
         if (currentWidth !== window.innerWidth) {
             await updateStartMediaSize()
             currentWidth = window.innerWidth;
