@@ -8,7 +8,7 @@ export const mediapipe = async () => {
 
     const videoElement = document.getElementsByClassName('input_video')[0];
     const canvasElement = document.querySelector("canvas")
-    const canvasCtx = canvasElement.getContext('2d');
+    let canvasCtx = canvasElement.getContext('2d');
 
     const updateStartMediaSize = async () =>{
         let stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -19,6 +19,7 @@ export const mediapipe = async () => {
 
         canvasElement.width = width
         canvasElement.height = height
+        canvasCtx = canvasElement.getContext('2d');
     }
 
     const updateMediaSize = async () => {
