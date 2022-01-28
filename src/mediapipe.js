@@ -3,33 +3,33 @@ import { Camera } from "@mediapipe/camera_utils";
 import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
 import { socket } from "./ws.js"
 
-export const mediapipe = () => {
+export const mediapipe = async () => {
     let currentWidth = window.innerWidth;
 
     const videoElement = document.getElementsByClassName('input_video')[0];
     const canvasElement = document.querySelector("canvas")
     const canvasCtx = canvasElement.getContext('2d');
 
+    const updateStartMediaSize = async () =>{
+        let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        let { width, height } = stream.getTracks()[0].getSettings();
+
+        console.log(`${width}x${height}`);
+
+        canvasElement.width = width
+        canvasElement.height = height
+    }
+
     const updateMediaSize = async () => {
         if (currentWidth !== window.innerWidth) {
-
-            let stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-            let { width, height } = stream.getTracks()[0].getSettings();
-
-            console.log(`${width}x${height}`);
-
-            canvasElement.width = width
-            canvasElement.height = height
+            await updateStartMediaSize()
             currentWidth = window.innerWidth;
-
         }
     }
 
     // 모바일 디바이스 방향 전환시 적용
     window.onresize = updateMediaSize
-
-    updateMediaSize()
 
     function onResults(results) {
         if (!results.poseLandmarks) {
@@ -64,7 +64,6 @@ export const mediapipe = () => {
     const pose = new Pose({
         locateFile: (file) => {
             return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${VERSION}/${file}`;
-            // return `@mediapipe/pose/${file}`;
         }
     });
     pose.setOptions({
@@ -82,5 +81,10 @@ export const mediapipe = () => {
             await pose.send({ image: videoElement });
         },
     });
-    camera.start()
+
+    await pose.initialize()
+    console.log("succes to load pose model")
+    await camera.start()
+    await updateStartMediaSize()
+    console.log("success to load camera module")
 }
