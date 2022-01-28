@@ -14,25 +14,26 @@ if ('serviceWorker' in navigator) {
 }
 
 socket.on("connect", () => {
-    console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-    console.log(socket.connected); // true
-    console.log("success to connect");
+    if (socket.connected) console.log(`id(${socket.id}) success to connect`);
 });
 
 socket.on("disconnect", () => {
-    console.log(socket.id); // undefined
-    console.log(socket.connected); // false 
-    console.log("socket server disconnected")
+    if (!socket.disconnected) console.log("socket server disconnected")
 });
 
 socket.on("error", (error) => {
     console.error(error)
 });
 
+let action = "?"
+
 socket.on("result", (arg) => {
-    console.log(arg.action);
-    let pose = document.querySelector("div#pose_name")
-    pose.textContent = arg.action
+    if (action !== arg.action) {
+        action = arg.action
+        if (action !== "?") console.log(action);
+        let pose = document.querySelector("div#pose_name")
+        pose.textContent = action
+    }
 });
 
 mediapipe()
