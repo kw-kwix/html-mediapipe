@@ -10,7 +10,22 @@ export const mediapipe = async () => {
     const canvasElement = document.querySelector("canvas")
     let canvasCtx = canvasElement.getContext('2d');
 
-    const updateStartMediaSize = async () =>{
+    const updateSize = () => {
+        let width, height;
+        console.log(window.innerHeight)
+        console.log(window.innerWidth)
+        if (window.innerWidth > window.innerHeight) {
+            height = window.innerHeight;
+            width = height;
+        } else {
+            width = window.innerWidth;
+            height = width;
+        }
+        canvasElement.width = width;
+        canvasElement.height = height;
+    }
+
+    const updateStartMediaSize = async () => {
         let stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
         let { width, height } = stream.getTracks()[0].getSettings();
@@ -32,7 +47,7 @@ export const mediapipe = async () => {
     }
 
     // 모바일 디바이스 방향 전환시 적용
-    window.onresize = updateMediaSize
+    window.onresize = updateSize
 
     function onResults(results) {
         if (!results.poseLandmarks) {
@@ -88,6 +103,6 @@ export const mediapipe = async () => {
     await pose.initialize()
     console.log("succes to load pose model")
     await camera.start()
-    await updateStartMediaSize()
+    updateSize()
     console.log("success to load camera module")
 }
