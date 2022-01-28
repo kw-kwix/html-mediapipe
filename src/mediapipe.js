@@ -85,6 +85,6 @@ export const mediapipe = async () => {
     await pose.initialize()
     console.log("succes to load pose model")
     await camera.start()
-    await updateStartMediaSize()
+    // await updateStartMediaSize()
     console.log("success to load camera module")
 }
