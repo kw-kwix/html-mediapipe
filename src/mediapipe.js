@@ -1,6 +1,7 @@
 import { Pose, POSE_CONNECTIONS, VERSION } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
 import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
+import { socket } from "./ws.js"
 
 export const mediapipe = () => {
     let currentWidth = window.innerWidth;
@@ -56,6 +57,7 @@ export const mediapipe = () => {
         drawLandmarks(canvasCtx, results.poseLandmarks,
             { color: '#FF0000', lineWidth: 2 });
         canvasCtx.restore();
+        if (socket.connected) socket.emit("data", results)
 
     }
 
