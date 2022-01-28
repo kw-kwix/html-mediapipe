@@ -18,7 +18,7 @@ socket.on("connect", () => {
 });
 
 socket.on("disconnect", () => {
-    if (!socket.disconnected) console.log("socket server disconnected")
+    if (socket.disconnected) console.log("socket server disconnected")
 });
 
 socket.on("error", (error) => {
