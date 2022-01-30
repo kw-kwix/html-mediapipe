@@ -2,6 +2,7 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { mediapipe } from "./mediapipe.js";
 import { socket } from "./ws.js";
+import "./components/header";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
