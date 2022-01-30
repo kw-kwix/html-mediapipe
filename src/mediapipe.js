@@ -1,85 +1,98 @@
 import { Pose, POSE_CONNECTIONS, VERSION } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
 import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
-import { socket } from "./ws.js"
+import { socket } from "./ws.js";
 
 export const mediapipe = async () => {
-    const videoElement = document.getElementsByClassName('input_video')[0];
-    const canvasElement = document.querySelector("canvas")
-    let canvasCtx = canvasElement.getContext('2d');
+  const videoElement = document.getElementsByClassName("input_video")[0];
+  const canvasElement = document.querySelector("canvas");
+  let canvasCtx = canvasElement.getContext("2d");
 
-    const updateSize = () => {
-        let width, height;
-        console.log(window.innerHeight)
-        console.log(window.innerWidth)
-        if (window.innerWidth > window.innerHeight) {
-            height = window.innerHeight;
-            width = height;
-        } else {
-            width = window.innerWidth;
-            height = width;
-        }
-        canvasElement.width = width;
-        canvasElement.height = height;
+  const updateSize = () => {
+    let width, height;
+    console.log(window.innerHeight);
+    console.log(window.innerWidth);
+    if (window.innerWidth > window.innerHeight) {
+      height = window.innerHeight;
+      width = height;
+    } else {
+      width = window.innerWidth;
+      height = width;
+    }
+    canvasElement.width = width;
+    canvasElement.height = height;
+  };
+
+  // 모바일 디바이스 방향 전환시 적용
+  window.onresize = updateSize;
+
+  function onResults(results) {
+    if (!results.poseLandmarks) {
+      return;
     }
 
-    // 모바일 디바이스 방향 전환시 적용
-    window.onresize = updateSize
+    canvasCtx.save();
+    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+    canvasCtx.drawImage(
+      results.segmentationMask,
+      0,
+      0,
+      canvasElement.width,
+      canvasElement.height
+    );
 
-    function onResults(results) {
-        if (!results.poseLandmarks) {
-            return;
-        }
+    // Only overwrite existing pixels.
+    // canvasCtx.globalCompositeOperation = 'source-in';
+    // canvasCtx.fillStyle = '#00FF00';
+    // canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
-        canvasCtx.save();
-        canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-        canvasCtx.drawImage(results.segmentationMask, 0, 0,
-            canvasElement.width, canvasElement.height);
+    // Only overwrite missing pixels.
+    // canvasCtx.globalCompositeOperation = 'destination-atop';
+    canvasCtx.drawImage(
+      results.image,
+      0,
+      0,
+      canvasElement.width,
+      canvasElement.height
+    );
 
-        // Only overwrite existing pixels.
-        // canvasCtx.globalCompositeOperation = 'source-in';
-        // canvasCtx.fillStyle = '#00FF00';
-        // canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
-
-        // Only overwrite missing pixels.
-        // canvasCtx.globalCompositeOperation = 'destination-atop';
-        canvasCtx.drawImage(
-            results.image, 0, 0, canvasElement.width, canvasElement.height);
-
-        canvasCtx.globalCompositeOperation = 'source-over';
-        drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS,
-            { color: '#00FF00', lineWidth: 4 });
-        drawLandmarks(canvasCtx, results.poseLandmarks,
-            { color: '#FF0000', lineWidth: 2 });
-        canvasCtx.restore();
-        if (socket.connected) socket.emit("data", results)
-
-    }
-
-    const pose = new Pose({
-        locateFile: (file) => {
-            return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${VERSION}/${file}`;
-        }
+    canvasCtx.globalCompositeOperation = "source-over";
+    drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
+      color: "#00FF00",
+      lineWidth: 4,
     });
-    pose.setOptions({
-        modelComplexity: 1,
-        smoothLandmarks: true,
-        enableSegmentation: true,
-        smoothSegmentation: true,
-        minDetectionConfidence: 0.5,
-        minTrackingConfidence: 0.5
+    drawLandmarks(canvasCtx, results.poseLandmarks, {
+      color: "#FF0000",
+      lineWidth: 2,
     });
-    pose.onResults(onResults);
+    canvasCtx.restore();
+    if (socket.connected) socket.emit("data", results);
+  }
 
-    const camera = new Camera(videoElement, {
-        onFrame: async () => {
-            await pose.send({ image: videoElement });
-        },
-    });
+  const pose = new Pose({
+    locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@${VERSION}/${file}`;
+    },
+  });
+  pose.setOptions({
+    modelComplexity: 1,
+    smoothLandmarks: true,
+    enableSegmentation: true,
+    smoothSegmentation: true,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5,
+  });
+  pose.onResults(onResults);
 
-    await pose.initialize()
-    console.log("succes to load pose model")
-    await camera.start()
-    updateSize()
-    console.log("success to load camera module")
-}
+  const camera = new Camera(videoElement, {
+    onFrame: async () => {
+      await pose.send({ image: videoElement });
+    },
+  });
+
+  await pose.initialize();
+  console.log("succes to load pose model");
+  await camera.start();
+  updateSize();
+  console.log("success to load camera module");
+};
