@@ -4,18 +4,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: 'development', // 아래 3개는 기본 설정
     entry: './src/index.js',
-    output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'dist'),
-        clean: true
-    },
     devtool: 'inline-source-map', // development setting
     devServer: {
-        static: './dist',
+        static: './src',
         port: 9000,
         open: true,
         hot: true,
         watchFiles: ["src/"],
+        liveReload: true,
+        compress: true,
+        https: true,
     },
     module: { // css loader for bootstrap
         rules: [
