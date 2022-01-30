@@ -13,6 +13,9 @@ module.exports = {
     devServer: {
         static: './dist',
         port: 9000,
+        open: true,
+        hot: true,
+        watchFiles: ["src/"],
     },
     module: { // css loader for bootstrap
         rules: [

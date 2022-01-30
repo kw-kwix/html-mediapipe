@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
-    "serve": "webpack serve --open -c webpack.config.dev.js",
+    "serve": "webpack serve -c webpack.config.dev.js",
     "start": "http-server dist"
   },
   "devDependencies": {
