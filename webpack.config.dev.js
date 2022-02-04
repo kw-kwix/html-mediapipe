@@ -10,7 +10,7 @@ module.exports = {
         port: 9000,
         open: true,
         hot: true,
-        watchFiles: ["src/"],
+        watchFiles: ["src/","public"],
         liveReload: true,
         compress: true,
         https: true,
@@ -27,6 +27,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({ template: "./src/index.html", title: "KWIX" }),
+        new HtmlWebpackPlugin({ template: "public/index.html", title: "KWIX" }),
     ]
 };

@@ -28,13 +28,13 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({ template: "./src/index.html", title: "KWIX" }),
         new WorkboxPlugin.GenerateSW({
             // these options encourage the ServiceWorkers to get in there fast
             // and not allow any straggling "old" SWs to hang around
             clientsClaim: true,
             skipWaiting: true,
         }),
+        new HtmlWebpackPlugin({ template: "public/index.html", title: "KWIX" }),
         new WebpackPwaManifest({
             name: 'KWIX',
             short_name: 'KWIX',
@@ -43,12 +43,12 @@ module.exports = {
             crossorigin: 'use-credentials', //can be null, use-credentials or anonymous
             icons: [
                 {
-                    src: path.resolve('src/assets/icon-1.png'),
+                    src: path.resolve('public/assets/icon-1.png'),
                     sizes: [512], // multiple sizes
                     ios: true
                 },
                 {
-                    src: path.resolve('src/assets/icon-2.png'),
+                    src: path.resolve('public/assets/icon-2.png'),
                     size: '192x192', // you can also use the specifications pattern
                     ios: true
                 },
