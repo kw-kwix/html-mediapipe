@@ -1,11 +1,10 @@
 import { Pose, VERSION } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
 import { socket } from "./ws.js";
-import { Canvas } from "./canvas";
+import { canvas } from "./canvas";
 
 export const mediapipe = async () => {
   const videoElement = document.getElementsByClassName("input_video")[0];
-  const canvas = new Canvas();
 
   const updateSize = () => {
     let { innerHeight, innerWidth } = window;

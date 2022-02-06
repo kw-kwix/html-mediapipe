@@ -1,8 +1,7 @@
 import { POSE_CONNECTIONS, Results } from "@mediapipe/pose";
 import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
 
-
-export class Canvas {
+class Canvas {
   constructor() {
     this.element = document.querySelector("canvas");
     this.ctx = this.element.getContext("2d");
@@ -31,3 +30,5 @@ export class Canvas {
     this.ctx.restore();
   }
 }
+
+export const canvas = new Canvas()
