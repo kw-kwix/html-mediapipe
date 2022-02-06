@@ -6,25 +6,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <title>KWIX</title>
+  <style>
+    footer {
+      position: fixed;
+      /* height: 100px; */
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
-      <video class="input_video" playsinline style="display: none;"></video>
-      <canvas class="output_canvas" width="1280px" height="720px"></canvas>
-    </div>
+  <main>
+    <div class="container">
+      <div class="row">
+        <video class="input_video" playsinline style="display: none;"></video>
+        <canvas class="output_canvas" width="1280px" height="720px"></canvas>
+      </div>
     <br>
-    <div class="row">
-      <div class="d-grid gap-2 col-1 mx-auto">
-        <button class="btn btn-lg btn-primary" type="button">
+    <!-- <div class="landmark-grid-container"></div> -->
+  </div>
+</main>
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col text-center">
+        <button class="btn btn-lg" type="button">
           <i class="fas fa-play" style="display: block;"></i>
           <i class="fas fa-stop" style="display: none;"></i>
         </button>
-      </div>
     </div>
-    <!-- <div class="landmark-grid-container"></div> -->
   </div>
+    </div>
+  </footer>
 </body>
 
 </html>
