@@ -1,26 +1,16 @@
-import { Pose, POSE_CONNECTIONS, VERSION } from "@mediapipe/pose";
+import { Pose, VERSION } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
-import { drawLandmarks, drawConnectors } from "@mediapipe/drawing_utils";
 import { socket } from "./ws.js";
+import { Canvas } from "./canvas";
 
 export const mediapipe = async () => {
   const videoElement = document.getElementsByClassName("input_video")[0];
-  const canvasElement = document.querySelector("canvas");
-  let canvasCtx = canvasElement.getContext("2d");
+  const canvas = new Canvas();
 
   const updateSize = () => {
-    let width, height;
-    console.log(window.innerHeight);
-    console.log(window.innerWidth);
-    if (window.innerWidth > window.innerHeight) {
-      height = window.innerHeight;
-      width = height;
-    } else {
-      width = window.innerWidth;
-      height = width;
-    }
-    canvasElement.width = width;
-    canvasElement.height = height;
+    let { innerHeight, innerWidth } = window;
+    canvas.element.height = innerHeight;
+    canvas.element.width = innerWidth;
   };
 
   // 모바일 디바이스 방향 전환시 적용
@@ -31,41 +21,8 @@ export const mediapipe = async () => {
       return;
     }
 
-    canvasCtx.save();
-    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    canvasCtx.drawImage(
-      results.segmentationMask,
-      0,
-      0,
-      canvasElement.width,
-      canvasElement.height
-    );
+    canvas.draw(results);
 
-    // Only overwrite existing pixels.
-    // canvasCtx.globalCompositeOperation = 'source-in';
-    // canvasCtx.fillStyle = '#00FF00';
-    // canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
-
-    // Only overwrite missing pixels.
-    // canvasCtx.globalCompositeOperation = 'destination-atop';
-    canvasCtx.drawImage(
-      results.image,
-      0,
-      0,
-      canvasElement.width,
-      canvasElement.height
-    );
-
-    canvasCtx.globalCompositeOperation = "source-over";
-    drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-      color: "#00FF00",
-      lineWidth: 4,
-    });
-    drawLandmarks(canvasCtx, results.poseLandmarks, {
-      color: "#FF0000",
-      lineWidth: 2,
-    });
-    canvasCtx.restore();
     if (socket.connected) socket.emit("data", results);
   }
 
