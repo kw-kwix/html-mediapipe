@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { mediapipe } from "./mediapipe.js";
 import { socket } from "./ws.js";
 import "./components/header";
+import { canvas } from "./canvas.js";
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -41,6 +42,7 @@ socket.on("disconnect", () => {
     console.log("socket server disconnected");
     stop.style.display = "none";
     play.style.display = "block";
+    canvas.text = "";
   }
 });
 
@@ -53,9 +55,6 @@ let action = "?";
 socket.on("result", (arg) => {
   if (action !== arg.action) {
     action = arg.action;
-    if (action !== "?") console.log(action);
-    let pose = document.querySelector("div#pose_name");
-    pose.textContent = action;
+    canvas.text = action;
   }
 });
-

@@ -5,6 +5,7 @@ class Canvas {
   constructor() {
     this.element = document.querySelector("canvas");
     this.ctx = this.element.getContext("2d");
+    this.text = "";
   }
 
   /**
@@ -28,6 +29,13 @@ class Canvas {
       lineWidth: 2,
     });
     this.ctx.restore();
+    this.writeText();
+  }
+
+  writeText() {
+    this.ctx.fillStyle = "red";
+    this.ctx.textAlign = "center";
+    this.ctx.fillText(this.text, this.element.width / 2, this.element.height / 12);
   }
 }
 
