@@ -17,12 +17,31 @@ if ("serviceWorker" in navigator) {
   });
 }
 
+mediapipe();
+
+const button = document.querySelector("button")
+const play = document.getElementsByClassName("fas fa-play")[0]
+const stop = document.getElementsByClassName("fas fa-stop")[0]
+
+button.addEventListener("click", () => {
+  if (socket.connected) socket.disconnect();
+  else socket.connect();
+});
+
 socket.on("connect", () => {
-  if (socket.connected) console.log(`id(${socket.id}) success to connect`);
+  if (socket.connected) {
+    console.log(`id(${socket.id}) success to connect`);
+    stop.style.display="block"
+    play.style.display="none"
+  }
 });
 
 socket.on("disconnect", () => {
-  if (socket.disconnected) console.log("socket server disconnected");
+  if (socket.disconnected) {
+    console.log("socket server disconnected");
+    stop.style.display = "none";
+    play.style.display = "block";
+  }
 });
 
 socket.on("error", (error) => {
@@ -40,4 +59,3 @@ socket.on("result", (arg) => {
   }
 });
 
-mediapipe();
